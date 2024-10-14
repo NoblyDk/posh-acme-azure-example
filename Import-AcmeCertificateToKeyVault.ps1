@@ -4,8 +4,7 @@ param (
 )
 
 # Split certificate names by comma or semi-colon
-$certificateName = $CertificateNames.Replace(',', ';') -split ';' | ForEach-Object -Process { $_.Trim() } | Select-Object -First 1
-
+$currentServerName = ((Get-PAServer).Name)
 # For wildcard certificates, Posh-ACME replaces * with ! in the directory name
 $certificateName = $certificateName.Replace('*', '!')
 
@@ -29,9 +28,9 @@ $pfxFilePath = Join-Path -Path $orderDirectoryPath -ChildPath "fullchain.pfx"
 if ((Test-Path -Path $orderDirectoryPath) -and (Test-Path -Path $orderDataPath) -and (Test-Path -Path $pfxFilePath)) {
 
     $pfxPass = (Get-PAOrder $certificateName).PfxPass
-
+    $securePfxPass = ConvertTo-SecureString $pfxPass -AsPlainText -Force
     # Load PFX
-    $certificate = New-Object -TypeName System.Security.Cryptography.X509Certificates.X509Certificate2 -ArgumentList $pfxFilePath, $pfxPass, 'EphemeralKeySet'
+    $certificate = Get-PfxCertificate $pfxFilePath -Password $securePfxPass
 
     # Get the current certificate from key vault (if any)
     $azureKeyVaultCertificateName = $certificateName.Replace(".", "-").Replace("!", "wildcard")
@@ -40,6 +39,10 @@ if ((Test-Path -Path $orderDirectoryPath) -and (Test-Path -Path $orderDataPath) 
 
     # If we have a different certificate, import it
     If (-not $azureKeyVaultCertificate -or $azureKeyVaultCertificate.Thumbprint -ne $certificate.Thumbprint) {
-        Import-AzKeyVaultCertificate -VaultName $keyVaultResource.Name -Name $azureKeyVaultCertificateName -FilePath $pfxFilePath -Password (ConvertTo-SecureString -String $pfxPass -AsPlainText -Force) | Out-Null
+        Import-AzKeyVaultCertificate -VaultName $keyVaultResource.Name -Name $azureKeyVaultCertificateName -FilePath $pfxFilePath -Password $securePfxPass | Out-Null    
+    }
+    else {
+        Write-Output "Resource Path(s) not valid."
+        exit 1
     }
 }
