@@ -12,8 +12,7 @@ $CertificateNames = $CertificateNames.Replace('*', '!')
 $CertificateNames
 
 Write-Host "Set working directory"
-$(System.DefaultWorkingDirectory)
-$workingDirectory = Join-Path -Path $(System.DefaultWorkingDirectory) -ChildPath "pa"
+$workingDirectory = Join-Path $(Get-Location) -ChildPath "pa"
 $workingDirectory
 
 Write-Host "Set Posh-ACME working directory"
