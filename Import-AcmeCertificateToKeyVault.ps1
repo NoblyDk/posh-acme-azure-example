@@ -26,7 +26,7 @@ $currentAccountName = (Get-PAAccount).id
 $currentAccountName
 
 Write-Host "Determine paths to resources"
-$orderDirectoryPath = Join-Path -Path $workingDirectory -ChildPath $currentServerName | Join-Path -ChildPath $currentAccountName | Join-Path -ChildPath $certificateName
+$orderDirectoryPath = Join-Path -Path $workingDirectory -ChildPath $currentServerName | Join-Path -ChildPath $currentAccountName | Join-Path -ChildPath $CertificateNames
 $orderDirectoryPath
 $orderDataPath = Join-Path -Path $orderDirectoryPath -ChildPath "order.json"
 $orderDataPath
