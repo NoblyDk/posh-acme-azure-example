@@ -2,7 +2,8 @@ param (
     [string] $CertificateNames,
     [string] $KeyVaultResourceId
 )
-
+$CertificateNames
+$KeyVaultResourceId
 Write-Host "Split certificate names by comma or semi-colon"
 $currentServerName = ((Get-PAServer).Name)
 $currentServerName
