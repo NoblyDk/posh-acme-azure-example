@@ -12,7 +12,8 @@ $CertificateNames = $CertificateNames.Replace('*', '!')
 $CertificateNames
 
 Write-Host "Set working directory"
-$workingDirectory = Join-Path -Path "." -ChildPath "pa"
+$DefaultWorkingDirectory
+$workingDirectory = Join-Path -Path $DefaultWorkingDirectory -ChildPath "pa"
 $workingDirectory
 
 Write-Host "Set Posh-ACME working directory"
@@ -59,4 +60,8 @@ if ((Test-Path -Path $orderDirectoryPath) -and (Test-Path -Path $orderDataPath) 
         Write-Output "Resource Path(s) not valid."
         exit 1
     }
+} 
+else {
+    Write-Output "No order or certificate was found."
+    exit 1
 }
