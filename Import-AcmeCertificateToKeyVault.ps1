@@ -8,7 +8,7 @@ Write-Host "Split certificate names by comma or semi-colon"
 $currentServerName = ((Get-PAServer).Name)
 $currentServerName
 Write-Host "For wildcard certificates, Posh-ACME replaces * with ! in the directory name"
-$certificateName = $certificateName.Replace('*', '!')
+$certificateName = $CertificateNames.Replace('*', '!')
 $certificateName
 
 Write-Host "Set working directory"
