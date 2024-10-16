@@ -20,7 +20,7 @@ New-Item -Path $workingDirectory -ItemType Directory | Out-Null
 
 # Sync contents of storage container to working directory
 # ~\AppData\Local\Programs\AZCopy\azcopy.exe login --identity
-~\AppData\Local\Programs\AZCopy\azcopy.exe sync "$StorageContainer" "$workingDirectory"
+./azcopy.exe sync "$StorageContainer" "$workingDirectory"
 
 # Set Posh-ACME working directory
 $env:POSHACME_HOME = $workingDirectory
@@ -54,4 +54,4 @@ $paPluginArgs = @{
 New-PACertificate -Domain $CertificateNamesArr -DnsPlugin Azure -PluginArgs $paPluginArgs
 
 # Sync working directory back to storage container
-~\AppData\Local\Programs\AZCopy\azcopy.exe sync "$workingDirectory" "$StorageContainer"
+./azcopy.exe sync "$workingDirectory" "$StorageContainer"
