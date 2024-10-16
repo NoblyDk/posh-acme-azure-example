@@ -1,9 +1,11 @@
 param (
     [string] $CertificateNames,
-    [string] $KeyVaultResourceId
+    [string] $KeyVaultResourceId,
+    [string] $AcmeDirectory
 )
 $CertificateNames
 $KeyVaultResourceId
+$AcmeDirectory
 Write-Host "Split certificate names by comma or semi-colon"
 $currentServerName = ((Get-PAServer).Name)
 $currentServerName
@@ -20,13 +22,13 @@ $env:POSHACME_HOME = $workingDirectory
 Import-Module -Name Posh-ACME -Force
 
 Write-Host "Resolve the details of the certificate"
-$currentServerName = ((Get-PAServer).location) -split "/" | Where-Object -FilterScript { $_ } | Select-Object -Skip 1 -First 1
-$currentServerName
+#$currentServerName = ((Get-PAServer).location) -split "/" | Where-Object -FilterScript { $_ } | Select-Object -Skip 1 -First 1
+#$currentServerName
 $currentAccountName = (Get-PAAccount).id
 $currentAccountName
 
 Write-Host "Determine paths to resources"
-$orderDirectoryPath = Join-Path -Path $workingDirectory -ChildPath $currentServerName | Join-Path -ChildPath $currentAccountName | Join-Path -ChildPath $CertificateNames
+$orderDirectoryPath = Join-Path -Path $workingDirectory -ChildPath $AcmeDirectory | Join-Path -ChildPath $currentAccountName | Join-Path -ChildPath $CertificateNames
 $orderDirectoryPath
 $orderDataPath = Join-Path -Path $orderDirectoryPath -ChildPath "order.json"
 $orderDataPath
