@@ -2,7 +2,7 @@ param (
     [string] $AcmeDirectory,
     [string] $AcmeContact,
     [string] $CertificateNames,
-    [string] $StorageContainerSASToken
+    [string] $StorageContainer
 )
 
 # Supress progress messages. Azure DevOps doesn't format them correctly (used by New-PACertificate)
@@ -19,7 +19,7 @@ if (Test-Path $workingDirectory) {
 New-Item -Path $workingDirectory -ItemType Directory | Out-Null
 
 # Sync contents of storage container to working directory
-./azcopy sync "$StorageContainerSASToken" "$workingDirectory"
+./azcopy sync "$StorageContainer" "$workingDirectory"
 
 # Set Posh-ACME working directory
 $env:POSHACME_HOME = $workingDirectory
