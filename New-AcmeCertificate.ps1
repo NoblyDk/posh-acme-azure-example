@@ -53,4 +53,4 @@ $paPluginArgs = @{
 New-PACertificate -Domain $CertificateNamesArr -DnsPlugin Azure -PluginArgs $paPluginArgs
 
 # Sync working directory back to storage container
-~\AppData\Local\Programs\AZCopy\azcopy.exe sync "$workingDirectory" "$StorageContainerSASToken"
+~\AppData\Local\Programs\AZCopy\azcopy.exe sync "$workingDirectory" "$StorageContainer"
