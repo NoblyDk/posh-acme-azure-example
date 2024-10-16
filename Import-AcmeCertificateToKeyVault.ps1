@@ -8,8 +8,8 @@ Write-Host "Split certificate names by comma or semi-colon"
 $currentServerName = ((Get-PAServer).Name)
 $currentServerName
 Write-Host "For wildcard certificates, Posh-ACME replaces * with ! in the directory name"
-$certificateName = $CertificateNames.Replace('*', '!')
-$certificateName
+$CertificateNames = $CertificateNames.Replace('*', '!')
+$CertificateNames
 
 Write-Host "Set working directory"
 $workingDirectory = Join-Path -Path "." -ChildPath "pa"
@@ -36,14 +36,14 @@ $pfxFilePath
 Write-Host "If we have a order and certificate available"
 if ((Test-Path -Path $orderDirectoryPath) -and (Test-Path -Path $orderDataPath) -and (Test-Path -Path $pfxFilePath)) {
 
-    $pfxPass = (Get-PAOrder $certificateName).PfxPass
+    $pfxPass = (Get-PAOrder $CertificateNames).PfxPass
     $securePfxPass = ConvertTo-SecureString $pfxPass -AsPlainText -Force
     Write-Host "Load PFX"
     $certificate = Get-PfxCertificate $pfxFilePath -Password $securePfxPass
     $certificate
     
     Write-Host "Get the current certificate from key vault (if any)"
-    $azureKeyVaultCertificateName = $certificateName.Replace(".", "-").Replace("!", "wildcard")
+    $azureKeyVaultCertificateName = $CertificateNames.Replace(".", "-").Replace("!", "wildcard")
     $keyVaultResource = Get-AzResource -ResourceId $KeyVaultResourceId
     $keyVaultResource
     $azureKeyVaultCertificate = Get-AzKeyVaultCertificate -VaultName $keyVaultResource.Name -Name $azureKeyVaultCertificateName -ErrorAction SilentlyContinue
