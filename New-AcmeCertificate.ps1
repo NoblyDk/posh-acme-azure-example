@@ -19,7 +19,6 @@ if (Test-Path $workingDirectory) {
 New-Item -Path $workingDirectory -ItemType Directory | Out-Null
 
 # Sync contents of storage container to working directory
-./azcopy.exe login --identity
 ./azcopy.exe sync "$StorageContainer" "$workingDirectory"
 
 # Set Posh-ACME working directory
