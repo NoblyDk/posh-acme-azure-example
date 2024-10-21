@@ -10,8 +10,8 @@ Write-Host "Split certificate names by comma or semi-colon"
 $currentServerName = ((Get-PAServer).Name)
 $currentServerName
 Write-Host "For wildcard certificates, Posh-ACME replaces * with ! in the directory name"
-$CertificateNames = $CertificateNames.Replace('*', '!')
-$CertificateNames
+$CertificateNamesLocal = $CertificateNames.Replace('*', '!')
+$CertificateNamesLocal
 
 Write-Host "Set working directory"
 $workingDirectory = Join-Path $(Get-Location) -ChildPath "pa"
@@ -28,7 +28,7 @@ $currentAccountName = (Get-PAAccount).id
 $currentAccountName
 
 Write-Host "Determine paths to resources"
-$orderDirectoryPath = Join-Path -Path $workingDirectory -ChildPath $AcmeDirectory | Join-Path -ChildPath $currentAccountName | Join-Path -ChildPath $CertificateNames
+$orderDirectoryPath = Join-Path -Path $workingDirectory -ChildPath $AcmeDirectory | Join-Path -ChildPath $currentAccountName | Join-Path -ChildPath $CertificateNamesLocal
 $orderDirectoryPath
 $orderDataPath = Join-Path -Path $orderDirectoryPath -ChildPath "order.json"
 $orderDataPath
@@ -45,7 +45,7 @@ if ((Test-Path -Path $orderDirectoryPath) -and (Test-Path -Path $orderDataPath) 
     $certificate
     
     Write-Host "Get the current certificate from key vault (if any)"
-    $azureKeyVaultCertificateName = $CertificateNames.Replace(".", "-").Replace("!", "wildcard")
+    $azureKeyVaultCertificateName = $CertificateNamesLocal.Replace(".", "-").Replace("!", "wildcard")
     $keyVaultResource = Get-AzResource -ResourceId $KeyVaultResourceId
     $keyVaultResource
     $azureKeyVaultCertificate = Get-AzKeyVaultCertificate -VaultName $keyVaultResource.Name -Name $azureKeyVaultCertificateName -ErrorAction SilentlyContinue
