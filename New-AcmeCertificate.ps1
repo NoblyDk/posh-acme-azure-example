@@ -2,9 +2,13 @@ param (
     [string] $AcmeDirectory,
     [string] $AcmeContact,
     [string] $CertificateNames,
-    [string] $StorageContainer
+    [string] $StorageContainer,
+    [string] $AZCOPY_SPA_APPLICATION_ID,
+    [string] $AZCOPY_SPA_CLIENT_SECRET
 )
-whoami
+$env:AZCOPY_AUTO_LOGIN_TYPE="SPN"
+$env:AZCOPY_SPA_APPLICATION_ID=$AZCOPY_SPA_APPLICATION_ID
+$env:AZCOPY_SPA_CLIENT_SECRET=$AZCOPY_SPA_CLIENT_SECRET
 # Supress progress messages. Azure DevOps doesn't format them correctly (used by New-PACertificate)
 $global:ProgressPreference = 'SilentlyContinue'
 
