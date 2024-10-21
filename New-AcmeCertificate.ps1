@@ -4,7 +4,7 @@ param (
     [string] $CertificateNames,
     [string] $StorageContainer
 )
-
+whoami
 # Supress progress messages. Azure DevOps doesn't format them correctly (used by New-PACertificate)
 $global:ProgressPreference = 'SilentlyContinue'
 
