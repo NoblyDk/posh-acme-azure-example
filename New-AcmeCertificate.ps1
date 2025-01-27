@@ -41,9 +41,9 @@ elseif ($account.contact -ne "mailto:$AcmeContact") {
 
 # Acquire access token for Azure (as we want to leverage the existing connection)
 $azureContext = Get-AzContext
-$currentAzureProfile = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile;
-$currentAzureProfileClient = New-Object Microsoft.Azure.Commands.ResourceManager.Common.RMProfileClient($currentAzureProfile);
-$azureAccessToken = $currentAzureProfileClient.AcquireAccessToken($azureContext.Tenant.Id).AccessToken;
+
+$tokenObj =Get-AzAccessToken -AsSecureString
+$azureAccessToken = ConvertFrom-SecureString -SecureString $tokenObj.Token -AsPlainText
 
 # Request certificate
 $paPluginArgs = @{
