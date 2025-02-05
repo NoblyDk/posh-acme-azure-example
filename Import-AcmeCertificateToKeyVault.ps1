@@ -20,6 +20,7 @@ $workingDirectory
 Write-Host "Set Posh-ACME working directory"
 $env:POSHACME_HOME = $workingDirectory
 Install-Module -Name Posh-ACME -Repository PSGallery -force
+Import-Module -Name Posh-ACME -force
 
 Write-Host "Resolve the details of the certificate"
 #$currentServerName = ((Get-PAServer).location) -split "/" | Where-Object -FilterScript { $_ } | Select-Object -Skip 1 -First 1
