@@ -24,7 +24,7 @@ New-Item -Path $workingDirectory -ItemType Directory | Out-Null
 # Set Posh-ACME working directory
 $env:POSHACME_HOME = $workingDirectory
 Install-Module -Name Posh-ACME -Repository PSGallery -force
-
+Import-Module -Name Posh-ACME -force
 # Configure Posh-ACME server
 Set-PAServer -DirectoryUrl $AcmeDirectory
 
